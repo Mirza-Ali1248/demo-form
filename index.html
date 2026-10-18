@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Signup Portal — Local Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Signup Portal home"
+        ><span class="brand-mark">S</span> Signup Portal</a
+      >
+      <button id="adminOpen" class="button button-outline" type="button">
+        Admin login
+      </button>
+    </header>
+
+    <main class="page">
+      <section class="intro">
+        <span class="eyebrow">WELCOME</span>
+        <h1>Create your account</h1>
+        <p>
+          Fill in the form below to register. This demo stores submissions in
+          this browser only.
+        </p>
+      </section>
+
+      <section class="panel">
+        <form id="signupForm" autocomplete="on">
+          <div class="form-grid">
+            <label
+              >Full name <span class="required">*</span>
+              <input
+                name="fullName"
+                required
+                maxlength="100"
+                autocomplete="name"
+                placeholder="e.g. Ali Khan"
+              />
+            </label>
+            <label
+              >Email address <span class="required">*</span>
+              <input
+                name="email"
+                type="email"
+                required
+                maxlength="254"
+                autocomplete="email"
+                placeholder="you@example.com"
+              />
+            </label>
+            <label
+              >Mobile number <span class="required">*</span>
+              <input
+                name="phone"
+                type="tel"
+                required
+                maxlength="30"
+                autocomplete="tel"
+                placeholder="+92 300 1234567"
+              />
+            </label>
+            <label
+              >Date of birth
+              <input name="dob" type="date" autocomplete="bday" />
+            </label>
+            <label
+              >Gender
+              <select name="gender">
+                <option value="">Prefer not to say</option>
+                <option>Female</option>
+                <option>Male</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label
+              >City
+              <input
+                name="city"
+                maxlength="100"
+                autocomplete="address-level2"
+                placeholder="Your city"
+              />
+            </label>
+            <label class="full"
+              >Address
+              <textarea
+                name="address"
+                rows="3"
+                maxlength="500"
+                autocomplete="street-address"
+                placeholder="Your address (optional)"
+              ></textarea>
+            </label>
+            <label
+              >Password <span class="required">*</span>
+              <input
+                name="password"
+                type="password"
+                required
+                minlength="8"
+                maxlength="128"
+                autocomplete="new-password"
+                placeholder="At least 8 characters"
+              />
+              <small
+                >Demo only: password is not saved. Do not enter a real
+                password.</small
+              >
+            </label>
+          </div>
+          <label class="consent"
+            ><input type="checkbox" name="consent" required /> I understand this
+            demo saves my submitted details in this browser on this
+            device.</label
+          >
+          <button class="button button-primary button-wide" type="submit">
+            Create account
+          </button>
+          <p
+            id="formMessage"
+            class="message"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+      </section>
+      <p class="privacy-note">
+        Local demo only. Entries are not sent to a server and will not appear on
+        another device or browser.
+      </p>
+    </main>
+
+    <div
+      id="adminModal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="adminTitle"
+    >
+      <div class="modal-card">
+        <button
+          id="adminClose"
+          class="close"
+          aria-label="Close admin login"
+          type="button"
+        >
+          ×
+        </button>
+        <span class="eyebrow">PRIVATE AREA</span>
+        <h2 id="adminTitle">Admin login</h2>
+        <p class="muted">Enter the local demo admin password.</p>
+        <form id="loginForm">
+          <label
+            >Admin password
+            <input
+              id="adminPassword"
+              type="password"
+              required
+              autocomplete="current-password"
+              placeholder="Enter admin password"
+            />
+          </label>
+          <button class="button button-primary button-wide" type="submit">
+            Open dashboard
+          </button>
+          <p id="loginMessage" class="message" role="status"></p>
+        </form>
+        <p class="hint">
+          First-time demo password: <code>Admin123!</code>. Change it in
+          <code>app.js</code> before use.
+        </p>
+      </div>
+    </div>
+
+    <section id="dashboard" class="dashboard hidden">
+      <div class="dashboard-head">
+        <div>
+          <span class="eyebrow">ADMIN AREA</span>
+          <h2>Registered users</h2>
+          <p class="muted">Records saved in this browser only.</p>
+        </div>
+        <button id="logout" class="button button-outline" type="button">
+          Log out
+        </button>
+      </div>
+      <div class="stats">
+        <div class="stat-card">
+          <span>Total registrations</span><strong id="userCount">0</strong>
+        </div>
+      </div>
+      <div class="tools">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search name, email, phone or city"
+          aria-label="Search registrations"
+        />
+        <button id="exportBtn" class="button button-outline" type="button">
+          Export CSV
+        </button>
+        <button id="clearBtn" class="button button-danger" type="button">
+          Delete all
+        </button>
+      </div>
+      <div id="emptyState" class="empty-state">
+        No registrations yet. Submit the form above to add a demo record.
+      </div>
+      <div class="table-wrap">
+        <table id="usersTable" class="hidden">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Submitted</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+      <div id="detailBox" class="detail-box hidden"></div>
+      <p class="security-warning">
+        This is a front-end demonstration, not real security. Anyone with access
+        to this browser's developer tools can inspect local data or modify the
+        JavaScript password check. Do not use for real or sensitive user data.
+      </p>
+    </section>
+
+    <footer>Signup Portal · Local demo</footer>
+    <script src="app.js"></script>
+  </body>
+</html>
